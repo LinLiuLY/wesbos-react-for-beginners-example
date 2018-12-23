@@ -8,11 +8,7 @@ class Order extends Component {
     const isAvailable = status === 'available';
     if (!isAvailable || !fishId) {
       return (
-<<<<<<< HEAD
-        <li>
-=======
         <li key={fishId}>
->>>>>>> Display order total amount.
           `$
           {name ? name : 'Fish'} sold out`
         </li>
@@ -34,17 +30,9 @@ class Order extends Component {
       const { price, status } = fishes[fishId];
       const count = order[fishId];
       const isAvailable = status === 'available';
-<<<<<<< HEAD
-
       if (isAvailable) {
         return current + count * price;
       }
-
-=======
-      if (isAvailable) {
-        return current + count * price;
-      }
->>>>>>> Display order total amount.
       return current;
     }, 0);
 
