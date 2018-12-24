@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class Order extends Component {
   displayOrderedFish = fishId => {
     const { fishes, order } = this.props;
-
+    if (!fishes[fishId]) return null;
     const { name, price, status } = fishes[fishId];
     const isAvailable = status === 'available';
     if (!isAvailable || !fishId) {
@@ -24,9 +24,11 @@ class Order extends Component {
 
   render() {
     const { order, fishes } = this.props;
-    const orderedFishIds = Object.keys(order);
 
+    const orderedFishIds = Object.keys(order);
     const total = orderedFishIds.reduce((current, fishId) => {
+      if (!fishes[fishId]) return null;
+
       const { price, status } = fishes[fishId];
       const count = order[fishId];
       const isAvailable = status === 'available';
