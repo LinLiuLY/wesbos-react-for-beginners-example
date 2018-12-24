@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 class EditFishForm extends Component {
   onChange = event => {
     event.preventDefault();
-    const type = event.target.name;
     const edittedFish = { ...this.props.fish };
     edittedFish[event.target.name] = event.target.value;
     this.props.editFish(this.props.index, edittedFish);
@@ -44,6 +43,9 @@ class EditFishForm extends Component {
           value={image}
           onChange={this.onChange}
         />
+        <button onClick={() => this.props.deleteFish(this.props.index)}>
+          Delete
+        </button>
       </div>
     );
   }

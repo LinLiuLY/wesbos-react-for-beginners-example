@@ -5,7 +5,6 @@ import EditFishForm from './EditFishForm';
 class Inventory extends Component {
   render() {
     const fishes = this.props.fishes;
-    console.log('fishes', Object.keys(fishes));
     return (
       <div>
         <div className="inventory">Inventory!!!</div>
@@ -15,6 +14,7 @@ class Inventory extends Component {
             key={key}
             index={key}
             editFish={this.props.editFish}
+            deleteFish={this.props.deleteFish}
           />
         ))}
         <AddFishForm addFish={this.props.addFish} />

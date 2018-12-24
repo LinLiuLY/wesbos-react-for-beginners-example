@@ -16,8 +16,9 @@ class Order extends Component {
     }
     return (
       <li key={fishId}>
-        FishName: {name}
-        totalCount: {order[fishId] * price}
+        <div>FishName: {name}</div>
+        <div>totalCount: {order[fishId] * price}</div>
+        <button onClick={() => this.props.deleteOrder(fishId)}>&times;</button>
       </li>
     );
   };
