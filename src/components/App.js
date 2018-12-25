@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Header from './Header';
 import Order from './Order';
 import Inventory from './Inventory';
@@ -10,6 +11,10 @@ class App extends Component {
   state = {
     fishes: {},
     order: {}
+  };
+
+  static propTypes = {
+    match: PropTypes.object.isRequired
   };
 
   componentDidMount() {
@@ -48,9 +53,9 @@ class App extends Component {
     });
   };
 
-  editFish = (index, fish) => {
+  editFish = (index, updatedFish) => {
     const fishes = { ...this.state.fishes };
-    fishes[index] = fish;
+    fishes[index] = updatedFish;
     this.setState({
       fishes
     });

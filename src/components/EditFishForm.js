@@ -1,11 +1,27 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class EditFishForm extends Component {
+  static propTypes = {
+    editFish: PropTypes.func.isRequired,
+    deleteFish: PropTypes.func.isRequired,
+    index: PropTypes.string,
+    fish: PropTypes.shape({
+      name: PropTypes.string,
+      price: PropTypes.number,
+      status: PropTypes.string,
+      desc: PropTypes.string,
+      image: PropTypes.string
+    })
+  };
+
   onChange = event => {
     event.preventDefault();
-    const edittedFish = { ...this.props.fish };
-    edittedFish[event.target.name] = event.target.value;
-    this.props.editFish(this.props.index, edittedFish);
+    const updatedFish = {
+      ...this.props.fish,
+      [event.target.name]: event.target.value
+    };
+    this.props.editFish(this.props.index, updatedFish);
   };
 
   render() {
