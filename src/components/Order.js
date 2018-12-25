@@ -1,33 +1,56 @@
 import React, { Component } from 'react';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 class Order extends Component {
   displayOrderedFish = fishId => {
     const { fishes, order } = this.props;
     if (!fishes[fishId]) return null;
     const { name, price, status } = fishes[fishId];
+    const count = order[fishId];
     const isAvailable = status === 'available';
+    const transitionOptions = {
+      classNames: 'order',
+      fishId,
+      timeout: { enter: 500, exit: 500 }
+    };
     if (!isAvailable || !fishId) {
       return (
-        <li key={fishId}>
-          `$
-          {name ? name : 'Fish'} sold out`
-        </li>
+        <CSSTransition {...transitionOptions}>
+          <li key={fishId}>
+            `$
+            {name ? name : 'Fish'} sold out`
+          </li>
+        </CSSTransition>
       );
     }
     return (
-      <li key={fishId}>
-        <div>FishName: {name}</div>
-        <div>totalCount: {order[fishId] * price}</div>
-        <button onClick={() => this.props.deleteOrder(fishId)}>&times;</button>
-      </li>
+      <CSSTransition {...transitionOptions}>
+        <li key={fishId}>
+          <span>
+            <TransitionGroup component="span" className="count">
+              <CSSTransition
+                classNames="count"
+                key={count}
+                timeout={{ enter: 500, exit: 500 }}
+              >
+                <span>{count}</span>
+              </CSSTransition>
+            </TransitionGroup>
+            <span>lbs {name}</span>
+            <span> $ {order[fishId] * price}</span>
+            <button onClick={() => this.props.deleteOrder(fishId)}>
+              &times;
+            </button>
+          </span>
+        </li>
+      </CSSTransition>
     );
   };
 
-  render() {
+  getTotal = orderedFishIds => {
     const { order, fishes } = this.props;
 
-    const orderedFishIds = Object.keys(order);
-    const total = orderedFishIds.reduce((current, fishId) => {
+    return orderedFishIds.reduce((current, fishId) => {
       if (!fishes[fishId]) return null;
 
       const { price, status } = fishes[fishId];
@@ -38,13 +61,23 @@ class Order extends Component {
       }
       return current;
     }, 0);
+  };
+
+  render() {
+    const { order } = this.props;
+
+    const orderedFishIds = Object.keys(order);
 
     return (
       <div className="order-wrap">
         <h2>Order</h2>
-        <ul className="order">{orderedFishIds.map(this.displayOrderedFish)}</ul>
+        <TransitionGroup component="ul" className="order">
+          <ul className="order">
+            {orderedFishIds.map(this.displayOrderedFish)}
+          </ul>
+        </TransitionGroup>
         <div className="total">
-          Total: {total}
+          Total: {this.getTotal(orderedFishIds)}
           <strong />
         </div>
       </div>
