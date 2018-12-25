@@ -44,8 +44,8 @@ class Order extends Component {
                 <span>{count}</span>
               </CSSTransition>
             </TransitionGroup>
-            <span>{`lbs ${name}`}</span>
-            <span>{`$ ${formatPrice(order[fishId] * price)}`}</span>
+            <span>lbs {name}</span>
+            <span>$ {formatPrice(order[fishId] * price)}</span>
             <button onClick={() => this.props.deleteOrder(fishId)}>
               &times;
             </button>
@@ -59,11 +59,11 @@ class Order extends Component {
     const { order, fishes } = this.props;
 
     return orderedFishIds.reduce((current, fishId) => {
-      if (!fishes[fishId]) return null;
+      if (!fishes[fishId]) return 0;
 
       const { price, status } = fishes[fishId];
       const count = order[fishId];
-      return status === 'available'? current + count * price: current;
+      return status === 'available' ? current + count * price : current;
     }, 0);
   };
 
