@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { formatPrice } from '../helpers';
 
 class Order extends Component {
   displayOrderedFish = fishId => {
@@ -37,7 +38,7 @@ class Order extends Component {
               </CSSTransition>
             </TransitionGroup>
             <span>lbs {name}</span>
-            <span> $ {order[fishId] * price}</span>
+            <span> $ {formatPrice(order[fishId] * price)}</span>
             <button onClick={() => this.props.deleteOrder(fishId)}>
               &times;
             </button>
@@ -77,7 +78,7 @@ class Order extends Component {
           </ul>
         </TransitionGroup>
         <div className="total">
-          Total: {this.getTotal(orderedFishIds)}
+          Total: {formatPrice(this.getTotal(orderedFishIds))}
           <strong />
         </div>
       </div>
