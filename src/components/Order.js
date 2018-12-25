@@ -18,7 +18,7 @@ class Order extends Component {
     const isAvailable = status === 'available';
     const transitionOptions = {
       classNames: 'order',
-      fishId,
+      key: fishId,
       timeout: { enter: 500, exit: 500 }
     };
     if (!isAvailable || !fishId) {
@@ -44,8 +44,8 @@ class Order extends Component {
                 <span>{count}</span>
               </CSSTransition>
             </TransitionGroup>
-            <span>lbs {name}</span>
-            <span> $ {formatPrice(order[fishId] * price)}</span>
+            <span>{`lbs ${name}`}</span>
+            <span>{`$ ${formatPrice(order[fishId] * price)}`}</span>
             <button onClick={() => this.props.deleteOrder(fishId)}>
               &times;
             </button>
@@ -63,11 +63,7 @@ class Order extends Component {
 
       const { price, status } = fishes[fishId];
       const count = order[fishId];
-      const isAvailable = status === 'available';
-      if (isAvailable) {
-        return current + count * price;
-      }
-      return current;
+      return status === 'available'? current + count * price: current;
     }, 0);
   };
 
