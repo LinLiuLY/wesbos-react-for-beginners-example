@@ -4,7 +4,7 @@ import AddFishForm from './AddFishForm';
 import EditFishForm from './EditFishForm';
 import firebase from 'firebase';
 import Login from './Login';
-import base, { firebaseApp } from '../base';
+import base from '../base';
 
 class Inventory extends Component {
   static propTypes = {
@@ -35,6 +35,7 @@ class Inventory extends Component {
     });
 
     if (!store.owner) {
+      debugger;
       base.post(`${this.props.storeId}/owner`, {
         data: authData.user.uid
       });
@@ -49,35 +50,58 @@ class Inventory extends Component {
   authenticate = provider => {
     const authProvider = new firebase.auth[`${provider}AuthProvider`]();
 
-    firebaseApp
+    firebase
       .auth()
       .signInWithPopup(authProvider)
       .then(this.authHandler);
   };
 
+  logout = async () => {
+    await firebase.auth().signOut();
+    this.setState({
+      uid: null
+    });
+  };
+
   render() {
-    const { fishes, editFish, loadSampleFishes, deleteFish } = this.props;
+    const Logout = <button onClick={this.logout}>Logout Out!</button>;
+
+    const {
+      fishes,
+      editFish,
+      loadSampleFishes,
+      deleteFish,
+      addFish
+    } = this.props;
 
     if (!this.state.uid) {
       return <Login authenticate={this.authenticate} />;
     }
 
+    if (this.state.uid !== this.state.owner) {
+      return (
+        <div>
+          <p>Sorry you are not the owner!</p>
+          {Logout}
+        </div>
+      );
+    }
+
     return (
       <div>
         <div className="inventory">Inventory!!!</div>
+        {Logout}
         {Object.keys(fishes).map(key => (
           <EditFishForm
             fish={fishes[key]}
             key={key}
             index={key}
-            editFish={this.props.editFish}
-            deleteFish={this.props.deleteFish}
+            editFish={editFish}
+            deleteFish={deleteFish}
           />
         ))}
-        <AddFishForm addFish={this.props.addFish} />
-        <button onClick={this.props.loadSampleFishes}>
-          Load sample fishes!
-        </button>
+        <AddFishForm addFish={addFish} />
+        <button onClick={loadSampleFishes}>Load sample fishes!</button>
       </div>
     );
   }
